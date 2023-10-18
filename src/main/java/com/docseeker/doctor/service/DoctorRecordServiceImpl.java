@@ -30,6 +30,12 @@ public class DoctorRecordServiceImpl implements DoctorRecordService {
 
     @Transactional
     @Override
+    public Optional<DoctorRecord> getByDniAndPassword(String dni, String password) {
+        return doctorRecordRepository.findByDniAndPassword(dni, password);
+    }
+
+    @Transactional
+    @Override
     public DoctorRecord save(DoctorRecord doctorRecord) {
         return doctorRecordRepository.save(doctorRecord);
     }
