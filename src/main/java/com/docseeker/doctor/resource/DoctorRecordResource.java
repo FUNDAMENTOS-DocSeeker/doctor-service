@@ -8,10 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DoctorRecordResource {
-    private Integer id;
     private String name;
     private String email;
-    private String password;
     private String dni;
     private String birthDate;
     private String phoneNumber;
