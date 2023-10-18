@@ -4,6 +4,7 @@ import com.docseeker.doctor.domain.model.entity.DoctorRecord;
 import com.docseeker.doctor.domain.service.DoctorRecordService;
 import com.docseeker.doctor.mapping.DoctorRecordMapper;
 import com.docseeker.doctor.resource.CreateDoctorRecordResource;
+import com.docseeker.doctor.resource.DoctorLoginResource;
 import com.docseeker.doctor.resource.DoctorRecordResource;
 import com.docseeker.doctor.resource.UpdateDoctorRecordResource;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/doctors")
+@CrossOrigin()
 public class DoctorRecordController {
 
     private DoctorRecordService doctorRecordService;
@@ -60,6 +62,22 @@ public class DoctorRecordController {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<DoctorRecordResource> getDoctorByDNIAndPassword(@RequestBody DoctorLoginResource doctorLoginResource) {
+        if (doctorRecordService.getByDniAndPassword(doctorLoginResource.getDni(), doctorLoginResource.getPassword()).isPresent()) {
+            DoctorRecordResource doctor =
+                    this.mapper.toResource(
+                            doctorRecordService.getByDniAndPassword(
+                                    doctorLoginResource.getDni(),
+                                    doctorLoginResource.getPassword()
+                            ).get()
+                    );
+            return ResponseEntity.ok(doctor);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
